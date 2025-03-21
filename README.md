@@ -156,6 +156,7 @@ GLOBAL OPTIONS:
    --nocase                                                   Adds case insensitive parsing to the enumeration (forces lower flag). (default: false)
    --marshal                                                  Adds text (and inherently json) marshalling functions. (default: false)
    --sql                                                      Adds SQL database scan and value functions. (default: false)
+   --bson                                                     Adds BSON marshal and unmarshal functions. (default: false)
    --sqlint                                                   Tells the generator that a string typed enum should be stored in sql as an integer value. (default: false)
    --flag                                                     Adds golang flag functions. (default: false)
    --prefix value                                             Adds a prefix with a user one. If you would like to replace the prefix, then combine this option with --noprefix.
