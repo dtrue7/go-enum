@@ -26,6 +26,7 @@ type rootT struct {
 	NoCase            bool
 	Marshal           bool
 	SQL               bool
+	BSON              bool
 	SQLInt            bool
 	Flag              bool
 	Prefix            string
@@ -91,6 +92,11 @@ func main() {
 				Name:        "sql",
 				Usage:       "Adds SQL database scan and value functions.",
 				Destination: &argv.SQL,
+			},
+			&cli.BoolFlag{
+				Name:        "bson",
+				Usage:       "Adds BSON marshal and unmarshal functions.",
+				Destination: &argv.BSON,
 			},
 			&cli.BoolFlag{
 				Name:        "sqlint",
@@ -212,6 +218,9 @@ func main() {
 				if argv.SQL {
 					g.WithSQLDriver()
 				}
+				if argv.BSON {
+					g.WithBSONDriver()
+				}
 				if argv.SQLInt {
 					g.WithSQLInt()
 				}
@@ -251,7 +260,7 @@ func main() {
 				if argv.NoComments {
 					g.WithNoComments()
 				}
-				if templates := []string(argv.TemplateFileNames.Value()); len(templates) > 0 {
+				if templates := argv.TemplateFileNames.Value(); len(templates) > 0 {
 					for _, t := range templates {
 						if fn, err := globFilenames(t); err != nil {
 							return err

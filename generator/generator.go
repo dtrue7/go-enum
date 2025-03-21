@@ -40,6 +40,7 @@ type Generator struct {
 	caseInsensitive   bool
 	marshal           bool
 	sql               bool
+	bson              bool
 	sqlint            bool
 	flag              bool
 	names             bool
@@ -138,6 +139,12 @@ func (g *Generator) WithMarshal() *Generator {
 // WithSQLDriver is used to add marshalling to the enum
 func (g *Generator) WithSQLDriver() *Generator {
 	g.sql = true
+	return g
+}
+
+// WithBSONDriver is used to add marshalling to the enum
+func (g *Generator) WithBSONDriver() *Generator {
+	g.bson = true
 	return g
 }
 
@@ -326,6 +333,7 @@ func (g *Generator) Generate(f *ast.File) ([]byte, error) {
 			"nocomments":    g.noComments,
 			"marshal":       g.marshal,
 			"sql":           g.sql,
+			"bson":          g.bson,
 			"sqlint":        g.sqlint,
 			"flag":          g.flag,
 			"names":         g.names,
