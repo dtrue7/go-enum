@@ -1,4 +1,4 @@
-module github.com/abice/go-enum
+module github.com/dtrue7/go-enum
 
 go 1.20
 
