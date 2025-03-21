@@ -101,6 +101,38 @@ func (x *{{.enum.Name}}) UnmarshalText(text []byte) error {
 }
 {{end}}
 
+{{ if .bson }}
+// MarshalBSONValue implements the bson.ValueMarshaler method.
+func (x {{.enum.Name}}) MarshalBSONValue() (bsontype.Type, []byte, error) {
+	return bson.TypeString, bsoncore.AppendString([]byte{}, x.String()), nil
+}
+
+// UnmarshalBSONValue implements the bson.ValueUnmarshaler method.
+func (x *{{.enum.Name}}) UnmarshalBSONValue(t bsontype.Type, src []byte) (err error) {
+	switch t {
+    case bson.TypeString:
+        res, _, ok := bsoncore.ReadString(src)
+        if !ok {
+            return fmt.Errorf("error reading string from bson")
+        }
+        *x, err = ParseAccessItemType(res)
+    case bson.TypeInt32:
+        res, _, ok := bsoncore.ReadInt32(src)
+        if !ok {
+            return fmt.Errorf("error reading int32 from bson")
+        }
+        *x = AccessItemType(res)
+    case bson.TypeInt64:
+        res, _, ok := bsoncore.ReadInt64(src)
+        if !ok {
+            return fmt.Errorf("error reading int64 from bson")
+        }
+        *x = AccessItemType(res)
+    }
+    return
+}
+{{end}}
+
 {{ if .anySQLEnabled }}
 var err{{.enum.Name}}NilPtr = errors.New("value pointer is nil") // one per type for package clashes
 {{ end }}
