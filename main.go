@@ -26,8 +26,9 @@ type rootT struct {
 	NoCase            bool
 	Marshal           bool
 	SQL               bool
-	BSON              bool
 	SQLInt            bool
+	BSON              bool
+	BSONInt           bool
 	Flag              bool
 	Prefix            string
 	Names             bool
@@ -94,14 +95,19 @@ func main() {
 				Destination: &argv.SQL,
 			},
 			&cli.BoolFlag{
+				Name:        "sqlint",
+				Usage:       "Tells the generator that a string typed enum should be stored in sql as an integer value.",
+				Destination: &argv.SQLInt,
+			},
+			&cli.BoolFlag{
 				Name:        "bson",
 				Usage:       "Adds BSON marshal and unmarshal functions.",
 				Destination: &argv.BSON,
 			},
 			&cli.BoolFlag{
-				Name:        "sqlint",
-				Usage:       "Tells the generator that a string typed enum should be stored in sql as an integer value.",
-				Destination: &argv.SQLInt,
+				Name:        "bsonint",
+				Usage:       "Tells the generator that a string typed enum should be stored in bson as an integer value. (default: false)",
+				Destination: &argv.BSONInt,
 			},
 			&cli.BoolFlag{
 				Name:        "flag",
@@ -218,11 +224,14 @@ func main() {
 				if argv.SQL {
 					g.WithSQLDriver()
 				}
+				if argv.SQLInt {
+					g.WithSQLInt()
+				}
 				if argv.BSON {
 					g.WithBSONDriver()
 				}
-				if argv.SQLInt {
-					g.WithSQLInt()
+				if argv.BSONInt {
+					g.WithBSONInt()
 				}
 				if argv.Flag {
 					g.WithFlag()
