@@ -106,7 +106,7 @@ func main() {
 			},
 			&cli.BoolFlag{
 				Name:        "bsonint",
-				Usage:       "Tells the generator that a string typed enum should be stored in bson as an integer value. (default: false)",
+				Usage:       "Tells the generator that a string typed enum should be stored in bson as an integer value.",
 				Destination: &argv.BSONInt,
 			},
 			&cli.BoolFlag{

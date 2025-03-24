@@ -159,7 +159,7 @@ func (x *{{.enum.Name}}) Scan(value interface{}) (err error) {
 	// A wider range of scannable types.
 	// driver.Value values at the top of the list for expediency
 	switch v := value.(type) {
-	case int64:
+	case int64, int32, int8:
 		*x = {{.enum.Name}}(v)
 	case string:
 		*x, err = Parse{{.enum.Name}}(v){{if .sqlnullint }}
@@ -188,14 +188,14 @@ func (x *{{.enum.Name}}) Scan(value interface{}) (err error) {
 		*x = *v
 	case uint:
 		*x = {{.enum.Name}}(v)
-	case uint64:
+	case uint64, uint32, uint8:
 		*x = {{.enum.Name}}(v)
 	case *int:
 		if v == nil{
 			return err{{.enum.Name}}NilPtr
 		}
 		*x = {{.enum.Name}}(*v)
-	case *int64:
+	case *int64, *int32, *int8:
 		if v == nil{
 			return err{{.enum.Name}}NilPtr
 		}
@@ -212,7 +212,7 @@ func (x *{{.enum.Name}}) Scan(value interface{}) (err error) {
 			return err{{.enum.Name}}NilPtr
 		}
 		*x = {{.enum.Name}}(*v)
-	case *uint64:
+	case *uint64, *uint32, *uint8:
 		if v == nil{
 			return err{{.enum.Name}}NilPtr
 		}
