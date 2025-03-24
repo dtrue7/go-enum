@@ -159,8 +159,14 @@ func (x *{{.enum.Name}}) Scan(value interface{}) (err error) {
 	// A wider range of scannable types.
 	// driver.Value values at the top of the list for expediency
 	switch v := value.(type) {
-	case int64, int32, int8:
+	case int64:
 		*x = {{.enum.Name}}(v)
+	case int32:
+    		*x = {{.enum.Name}}(v)
+    case int16:
+    		*x = {{.enum.Name}}(v)
+    case int8:
+        		*x = {{.enum.Name}}(v)
 	case string:
 		*x, err = Parse{{.enum.Name}}(v){{if .sqlnullint }}
 		if err != nil {
@@ -188,18 +194,39 @@ func (x *{{.enum.Name}}) Scan(value interface{}) (err error) {
 		*x = *v
 	case uint:
 		*x = {{.enum.Name}}(v)
-	case uint64, uint32, uint8:
+	case uint64:
 		*x = {{.enum.Name}}(v)
+	case uint32:
+    		*x = {{.enum.Name}}(v)
+    case uint16:
+    		*x = {{.enum.Name}}(v)
+    case uint8:
+    		*x = {{.enum.Name}}(v)
 	case *int:
 		if v == nil{
 			return err{{.enum.Name}}NilPtr
 		}
 		*x = {{.enum.Name}}(*v)
-	case *int64, *int32, *int8:
+	case *int64:
 		if v == nil{
 			return err{{.enum.Name}}NilPtr
 		}
 		*x = {{.enum.Name}}(*v)
+    case *int32:
+        if v == nil{
+            return err{{.enum.Name}}NilPtr
+        }
+        *x = {{.enum.Name}}(*v)
+    case *int16:
+        if v == nil{
+            return err{{.enum.Name}}NilPtr
+        }
+        *x = {{.enum.Name}}(*v)
+    case *int8:
+        if v == nil{
+            return err{{.enum.Name}}NilPtr
+        }
+        *x = {{.enum.Name}}(*v)
 	case float64: // json marshals everything as a float64 if it's a number
 		*x = {{.enum.Name}}(v)
 	case *float64: // json marshals everything as a float64 if it's a number
@@ -212,11 +239,26 @@ func (x *{{.enum.Name}}) Scan(value interface{}) (err error) {
 			return err{{.enum.Name}}NilPtr
 		}
 		*x = {{.enum.Name}}(*v)
-	case *uint64, *uint32, *uint8:
+	case *uint64:
 		if v == nil{
 			return err{{.enum.Name}}NilPtr
 		}
 		*x = {{.enum.Name}}(*v)
+	case *uint32:
+        if v == nil{
+            return err{{.enum.Name}}NilPtr
+        }
+        *x = {{.enum.Name}}(*v)
+    case *uint16:
+        if v == nil{
+            return err{{.enum.Name}}NilPtr
+        }
+        *x = {{.enum.Name}}(*v)
+    case *uint8:
+        if v == nil{
+            return err{{.enum.Name}}NilPtr
+        }
+        *x = {{.enum.Name}}(*v)
 	case *string:
 		if v == nil{
 			return err{{.enum.Name}}NilPtr
