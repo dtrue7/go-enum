@@ -110,7 +110,7 @@ func (x *{{.enum.Name}}) UnmarshalText(text []byte) error {
 }
 {{end}}
 
-{{- if .bson }}
+{{- if or .bson .bsonint}}
 // MarshalBSONValue implements the bson.ValueMarshaler method.
 func (x {{.enum.Name}}) MarshalBSONValue() (bsontype.Type, []byte, error) {
     {{- if .bsonint }}
