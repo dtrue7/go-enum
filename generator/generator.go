@@ -495,7 +495,7 @@ func (g *Generator) parseEnum(ts *ast.TypeSpec) (*Enum, error) {
 			prefixedName := name
 			if name != skipHolder {
 				prefixedName = enum.Prefix + name
-				prefixedName = g.sanitizeValue(prefixedName)
+				prefixedName = g.sanitizeValue(prefixedName, g.leaveSnakeCase)
 				if !g.leaveSnakeCase {
 					prefixedName = snakeToCamelCase(prefixedName)
 				}
@@ -549,7 +549,7 @@ func unescapeComment(comment string) string {
 // identifier syntax as described here: https://golang.org/ref/spec#Identifiers
 // identifier = letter { letter | unicode_digit }
 // where letter can be unicode_letter or '_'
-func (g *Generator) sanitizeValue(value string) string {
+func (g *Generator) sanitizeValue(value string, leaveSnakeCase bool) string {
 	// Keep skip value holders
 	if value == skipHolder {
 		return skipHolder
@@ -570,6 +570,10 @@ func (g *Generator) sanitizeValue(value string) string {
 			nameBuilder.WriteRune('X')
 		}
 
+		if !leaveSnakeCase && r == '.' {
+			nameBuilder.WriteRune(r)
+		}
+
 		if unicode.IsLetter(r) || unicode.IsNumber(r) || r == '_' {
 			nameBuilder.WriteRune(r)
 		}
@@ -579,7 +583,10 @@ func (g *Generator) sanitizeValue(value string) string {
 }
 
 func snakeToCamelCase(value string) string {
-	parts := strings.Split(value, "_")
+	splitFn := func(r rune) bool {
+		return r == '_' || r == '.'
+	}
+	parts := strings.FieldsFunc(value, splitFn)
 	title := cases.Title(language.Und, cases.NoLower)
 
 	for i, part := range parts {
